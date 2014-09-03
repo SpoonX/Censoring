@@ -1,0 +1,17 @@
+node_modules
+bower_components
+dump.rdb
+lib-cov
+*.seed
+*.log
+*.out
+*.pid
+npm-debug.log
+.nodemonignore
+*~
+*#
+.DS_STORE
+.netbeans
+nbproject
+.idea
+.node_history
