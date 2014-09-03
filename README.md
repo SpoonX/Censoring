@@ -11,6 +11,9 @@ var Censoring    = require('censoring'),
     scan         = new Censoring(),
     testSentence = '';
 
+// Enable filters we want to use
+scan.enableFilters(['phone_number', 'email_address', 'words']);
+
 // Word
 testSentence += 'The 1nt3r.n.e.t will not be censored! ';
 
