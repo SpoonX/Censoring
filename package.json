@@ -1,6 +1,6 @@
 {
   "name": "censoring",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Censor or highlight words and other patterns intelligently.",
   "main": "index.js",
   "scripts": {
