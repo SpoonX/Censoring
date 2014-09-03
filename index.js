@@ -2,11 +2,11 @@
 (function () {
 
   /**
-   * The TextScan object constructor.
+   * The Censoring object constructor.
    *
    * @constructor
    */
-  function TextScan() {
+  function Censoring() {
 
     /**
      * The string to replaces found matches with. Defaults to ***
@@ -85,7 +85,7 @@
     };
   }
 
-  TextScan.prototype = {
+  Censoring.prototype = {
 
     /**
      * Set the color of the highlighted occurrences in HEX.
@@ -119,7 +119,7 @@
      * Enable a filter by name.
      *
      * @param   {String}    filter
-     * @returns {TextScan}
+     * @returns {Censoring}
      */
     enableFilter: function (filter) {
       if (typeof this.patterns[filter] === 'undefined') {
@@ -135,8 +135,8 @@
      * Enable multiple filters at once.
      *
      * @param   {Array}     filters
-     * @returns {TextScan}
-     * @see     TextScan.enableFilter
+     * @returns {Censoring}
+     * @see     Censoring.enableFilter
      */
     enableFilters: function (filters) {
       if (!this.isArray(filters)) {
@@ -154,7 +154,7 @@
      * Disable a filter by name.
      *
      * @param   {String}    filter
-     * @returns {TextScan}
+     * @returns {Censoring}
      */
     disableFilter: function (filter) {
       if (typeof this.patterns[filter] === 'undefined') {
@@ -170,7 +170,7 @@
      * Add multiple filterWords.
      *
      * @param   {[]}        words
-     * @returns {TextScan}
+     * @returns {Censoring}
      */
     addFilterWords: function (words) {
       if (!words instanceof Array) {
@@ -188,7 +188,7 @@
      * Add a word to filter out.
      *
      * @param   {String}    word
-     * @returns {TextScan}
+     * @returns {Censoring}
      */
     addFilterWord: function (word) {
       var pattern = '',
@@ -230,7 +230,7 @@
      * Set the string to replace matches in the filterString() method.
      *
      * @param   {String}    str
-     * @returns {TextScan}
+     * @returns {Censoring}
      */
     setReplacementString: function (str) {
       if (typeof str !== 'string') {
@@ -263,7 +263,7 @@
      *
      * @param   {String}    str
      * @param   {Boolean}   highlight
-     * @returns {TextScan}
+     * @returns {Censoring}
      */
     prepare: function (str, highlight) {
       this.currentMatch.replace = this.filterString(str, highlight);
@@ -275,7 +275,7 @@
     /**
      * Get the filtered text.
      *
-     * @returns {TextScan}
+     * @returns {Censoring}
      */
     replace: function () {
       return this.currentMatch.replace;
@@ -336,24 +336,24 @@
   };
 
   /*
-   * Make sure TextScan is loadable through amd.
+   * Make sure Censoring is loadable through amd.
    */
   if (typeof define === 'function' && define.amd) {
     define([], function () {
-      return TextScan;
+      return Censoring;
     });
 
     return;
   }
 
   if (typeof module === 'object') {
-    module.exports = TextScan;
+    module.exports = Censoring;
 
     return;
   }
 
   /*
-   * Make sure TextScan is accessible beyond our scope.
+   * Make sure Censoring is accessible beyond our scope.
    */
-  window.TextScan = TextScan;
+  window.Censoring = Censoring;
 })();
