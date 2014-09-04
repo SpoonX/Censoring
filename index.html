@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Censoring : Censor or highlight words and other patterns intelligently.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Censoring</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/SpoonX/Censoring">View on GitHub</a>
+
+          <h1 id="project_title">Censoring</h1>
+          <h2 id="project_tagline">Censor or highlight words and other patterns intelligently.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/SpoonX/Censoring/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/SpoonX/Censoring/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="censoring" class="anchor" href="#censoring"><span class="octicon octicon-link"></span></a>Censoring</h1>
+
+<p>This module allows you to detect patterns in texts, even when attempted to be hidden and then either highlight (markup) or censor (replace) them.
+It checks for upper casing, lower casing, 1337 replacements, or s,p-l.'i*t.</p>
+
+<p><strong>Note:</strong> This module works in the browser as a global, or AMD module, as well as in node.js.</p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example:</h2>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Censoring</span>    <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'censoring'</span><span class="p">),</span>
+    <span class="nx">scan</span>         <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">(),</span>
+    <span class="nx">testSentence</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+
+<span class="c1">// Enable filters we want to use</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilters</span><span class="p">([</span><span class="s1">'phone_number'</span><span class="p">,</span> <span class="s1">'email_address'</span><span class="p">,</span> <span class="s1">'words'</span><span class="p">]);</span>
+
+<span class="c1">// Word</span>
+<span class="nx">testSentence</span> <span class="o">+=</span> <span class="s1">'The 1nt3r.n.e.t will not be censored! '</span><span class="p">;</span>
+
+<span class="c1">// Phone number</span>
+<span class="nx">testSentence</span> <span class="o">+=</span> <span class="s1">'Call me on 555-123456'</span><span class="p">;</span>
+
+<span class="c1">// Email address</span>
+<span class="nx">testSentence</span> <span class="o">+=</span> <span class="s1">', or send an email to me[at]example(dot)com.'</span><span class="p">;</span>
+
+<span class="c1">// Let's make the word internet illegal.</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">addFilterWord</span><span class="p">(</span><span class="s1">'internet'</span><span class="p">);</span>
+
+<span class="c1">// Tell the scanner we're done, and it can prepare the results.</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span><span class="nx">testSentence</span><span class="p">);</span>
+
+<span class="c1">// Did we have a match?</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">test</span><span class="p">())</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+    <span class="s1">'We had a match! Here it is, but censored:'</span><span class="p">,</span>
+    <span class="nx">scan</span><span class="p">.</span><span class="nx">replace</span><span class="p">()</span>
+  <span class="p">);</span>
+
+  <span class="c1">// The *** will not be censored! Call me on ***, or send an email to ***.</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p><code>npm install --save censoring</code></p>
+
+<h2>
+<a name="filters" class="anchor" href="#filters"><span class="octicon octicon-link"></span></a>Filters</h2>
+
+<table>
+<thead><tr>
+<th align="left">Pattern</th>
+<th align="left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">long_number</td>
+<td align="left">Matches long, consecutive numbers</td>
+</tr>
+<tr>
+<td align="left">phone_number</td>
+<td align="left">Matches phone numbers.</td>
+</tr>
+<tr>
+<td align="left">email_address</td>
+<td align="left">Matches email addresses in many formats.</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">Matches URL patterns.</td>
+</tr>
+<tr>
+<td align="left">words</td>
+<td align="left">Finds words, even when in disguise.</td>
+</tr>
+</tbody>
+</table><h2>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h2>
+
+<p>A <code>Censoring</code> instance has the following methods.</p>
+
+<h3>
+<a name="enablefilterstring-filtername" class="anchor" href="#enablefilterstring-filtername"><span class="octicon octicon-link"></span></a>.enableFilter(string filterName)</h3>
+
+<p>Enable a filter from the list of filters. By default, they're all disabled.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'email_address'</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="enablefiltersarray-filternames" class="anchor" href="#enablefiltersarray-filternames"><span class="octicon octicon-link"></span></a>.enableFilters(Array filterNames)</h3>
+
+<p>Enable multiple filters from the list of filters. By default, they're all disabled.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilters</span><span class="p">([</span><span class="s1">'phone_number'</span><span class="p">,</span> <span class="s1">'email_address'</span><span class="p">]);</span>
+</pre></div>
+
+<h3>
+<a name="disablefilterstring-filtername" class="anchor" href="#disablefilterstring-filtername"><span class="octicon octicon-link"></span></a>.disableFilter(string filterName)</h3>
+
+<p>Disable a previously enabled filter.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'email_address'</span><span class="p">);</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">disableFilter</span><span class="p">(</span><span class="s1">'email_address'</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="addfilterwordsarray-filterwords" class="anchor" href="#addfilterwordsarray-filterwords"><span class="octicon octicon-link"></span></a>.addFilterWords(Array filterWords)</h3>
+
+<p>Add multiple words to filter on.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'words'</span><span class="p">);</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">addFilterWord</span><span class="p">([</span><span class="s1">'stoopid head'</span><span class="p">,</span> <span class="s1">'big meany'</span><span class="p">]);</span>
+</pre></div>
+
+<h3>
+<a name="addfilterwordstring-filterword" class="anchor" href="#addfilterwordstring-filterword"><span class="octicon octicon-link"></span></a>.addFilterWord(string filterWord)</h3>
+
+<p>Add a word to filter on.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'words'</span><span class="p">);</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">addFilterWord</span><span class="p">(</span><span class="s1">'doody face'</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="setreplacementstringstring-replacementstring" class="anchor" href="#setreplacementstringstring-replacementstring"><span class="octicon octicon-link"></span></a>.setReplacementString(string replacementString)</h3>
+
+<p>Set the string to replace matches with. Defaults to <code>***</code>.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">setReplacementString</span><span class="p">(</span><span class="s1">'pony'</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="getreplacementstring" class="anchor" href="#getreplacementstring"><span class="octicon octicon-link"></span></a>.getReplacementString()</h3>
+
+<p>Get the currently set replacement string.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">getReplacementString</span><span class="p">();</span> <span class="c1">// Returns '***'</span>
+</pre></div>
+
+<h3>
+<a name="sethighlightcolorstring-hexcode" class="anchor" href="#sethighlightcolorstring-hexcode"><span class="octicon octicon-link"></span></a>.setHighlightColor(string hexCode)</h3>
+
+<p>Set the color for highlighted occurrences. Defaults to <code>#F2B8B8</code>.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">setHighlightColor</span><span class="p">(</span><span class="s1">'#ff0'</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="preparestring-inputstring-bool-highlight" class="anchor" href="#preparestring-inputstring-bool-highlight"><span class="octicon octicon-link"></span></a>.prepare(string inputString[, bool highlight])</h3>
+
+<p>Prepare a string, and optionally supply <code>highlight</code> to not replace occurrences, but highlight them using html.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'email_address'</span><span class="p">);</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span><span class="s1">'me@example[dot]com'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="test" class="anchor" href="#test"><span class="octicon octicon-link"></span></a>.test()</h3>
+
+<p>Test if the string you've prepared matches any of the filters.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'email_address'</span><span class="p">);</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span><span class="s1">'me@example[dot]com'</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">test</span><span class="p">())</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'We have a match!'</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="replace" class="anchor" href="#replace"><span class="octicon octicon-link"></span></a>.replace()</h3>
+
+<p>Replace all occurrences found in the prepared string.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'email_address'</span><span class="p">);</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">prepare</span><span class="p">(</span><span class="s1">'Email me at me@example[dot]com'</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">scan</span><span class="p">.</span><span class="nx">replace</span><span class="p">());</span>
+<span class="c1">// Outputs: Email me at ***</span>
+</pre></div>
+
+<h3>
+<a name="filterstringstring-inputstring-bool-highlight" class="anchor" href="#filterstringstring-inputstring-bool-highlight"><span class="octicon octicon-link"></span></a>.filterString(string inputString[, bool highlight])</h3>
+
+<p>Filter a string directly, without preparing it first.</p>
+
+<blockquote>
+<p>Note: Bad for performance When combined with <code>.test()</code> and <code>.replace</code>.</p>
+</blockquote>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">(),</span>
+    <span class="nx">testString</span> <span class="o">=</span> <span class="s2">"I'm going to tell mommy that you're a big meany!"</span><span class="p">,</span>
+    <span class="nx">result</span><span class="p">;</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'words'</span><span class="p">);</span>
+<span class="nx">scan</span><span class="p">.</span><span class="nx">addFilterWord</span><span class="p">([</span><span class="s1">'stoopid head'</span><span class="p">,</span> <span class="s1">'big meany'</span><span class="p">]);</span>
+
+<span class="nx">result</span> <span class="o">=</span> <span class="nx">scan</span><span class="p">.</span><span class="nx">filterString</span><span class="p">(</span><span class="nx">testString</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="c1">// Outputs: I'm going to tell mommy that you're a ***!</span>
+</pre></div>
+
+<h3>
+<a name="addfilterstring-name" class="anchor" href="#addfilterstring-name"><span class="octicon octicon-link"></span></a>.addFilter(string name)</h3>
+
+<p>Add a new filter. A filter is essentially a <code>name</code> and a <code>pattern</code>.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
+
+<span class="nx">scan</span><span class="p">.</span><span class="nx">addFilter</span><span class="p">(</span><span class="s1">'bigot'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">enabled</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">pattern</span><span class="o">:</span> <span class="sr">/^I'm not a racist,? but/</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="support--contributing" class="anchor" href="#support--contributing"><span class="octicon octicon-link"></span></a>Support / contributing</h2>
+
+<p>If you have any questions or feature requests (such as publishing on bower..?) you can:</p>
+
+<ul>
+<li>Check out the issues</li>
+<li>Join us on freenode (#spoonx)</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Censoring maintained by <a href="https://github.com/SpoonX">SpoonX</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
