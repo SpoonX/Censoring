@@ -159,6 +159,8 @@ if (scan.test()) {
 ### .replace()
 Replace all occurrences found in the prepared string.
 
+> Note: This will return HTML with the matches highlighted if the scan was prepared with .prepare(txt, true).
+
 ```javascript
 var scan = new Censoring();
 
