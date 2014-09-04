@@ -229,6 +229,10 @@ It checks for upper casing, lower casing, 1337 replacements, or s,p-l.'i*t.</p>
 
 <p>Replace all occurrences found in the prepared string.</p>
 
+<blockquote>
+<p>Note: This will return HTML with the matches highlighted if the scan was prepared with .prepare(txt, true).</p>
+</blockquote>
+
 <div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">scan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Censoring</span><span class="p">();</span>
 
 <span class="nx">scan</span><span class="p">.</span><span class="nx">enableFilter</span><span class="p">(</span><span class="s1">'email_address'</span><span class="p">);</span>
