@@ -28,8 +28,9 @@
      * @type {{replace: string, hasMatches: boolean}}
      */
     this.currentMatch = {
-      replace   : '',
-      hasMatches: false
+      replace: '',
+      hasMatches: false,
+      matches: []
     };
 
     /**
@@ -44,11 +45,11 @@
      * @type {{long_number: {pattern: RegExp, enabled: boolean}, phone_number: {pattern: RegExp, enabled: boolean}, email_address: {pattern: RegExp, enabled: boolean}, url: {pattern: RegExp, enabled: boolean}, words: {enabled: boolean, pattern: Array}}}
      */
     this.patterns = {
-      long_number  : {
+      long_number: {
         pattern: /\d{8,}/,
         enabled: false
       },
-      phone_number : {
+      phone_number: {
         pattern: /([+-]?[\d]{1,}[\d\s-]+|\([\d]+\))[-\d.\s]{8,}/gi,
         enabled: false
       },
@@ -56,11 +57,11 @@
         pattern: /[\w._%+-]+(@|\[at\]|\(at\))[\w.-]+(\.|\[dot\]|\(dot\)|\(punt\)|\[punt\])[a-zA-Z]{2,4}/gi,
         enabled: false
       },
-      url          : {
+      url: {
         pattern: /((https?:\/{1,2})?([-\w]\.{0,1}){2,}(\.|\[dot\]|\(dot\)|\(punt\)|\[punt\])([a-zA-Z]{2}\.[a-zA-Z]{2,3}|[a-zA-Z]{2,4}).*?(?=$|[^\w\/-]))/gi,
         enabled: false
       },
-      words        : {
+      words: {
         pattern: [],
         enabled: false
       }
@@ -192,9 +193,9 @@
      */
     addFilterWord: function (word) {
       var pattern = '',
-          any = '[^a-z0-9]?',
-          last = false,
-          character;
+        any = '[^a-z0-9]?',
+        last = false,
+        character;
 
       for (var i = 0; i < word.length; i++) {
         last = i === (word.length - 1);
@@ -250,12 +251,12 @@
     },
 
     /**
-     * Returns if text matched.
+     * Returns matches array or FALSE
      *
      * @returns {Boolean}
      */
     test: function () {
-      return this.currentMatch.hasMatches;
+      return this.currentMatch.hasMatches ? this.currentMatch.matches : false;
     },
 
     /**
@@ -290,15 +291,19 @@
      */
     filterString: function (str, highlight) {
       highlight = highlight || false;
+      var self = this;
 
       var highlightColor = this.highlightColor;
-
       var replace = function (str, pattern) {
         if (!highlight) {
-          return str.replace(pattern, this.replacementString);
+          return str.replace(pattern, function (match) {
+            self.currentMatch.matches.push(match);
+            return self.replacementString;
+          });
         }
 
         return str.replace(pattern, function (match) {
+          self.currentMatch.matches.push(match);
           return '<span style="background: #' + highlightColor + ';">' + match + '</span>';
         });
       }.bind(this);
