@@ -174,7 +174,7 @@
      * @returns {Censoring}
      */
     addFilterWords: function (words) {
-      if (!words instanceof Array) {
+      if (!this.isArray(words)) {
         throw 'Invalid type supplied for addFilterWords. Expected array.';
       }
 
