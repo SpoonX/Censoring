@@ -92,7 +92,7 @@ Add multiple words to filter on.
 var scan = new Censoring();
 
 scan.enableFilter('words');
-scan.addFilterWord(['stoopid head', 'big meany']);
+scan.addFilterWords(['stoopid head', 'big meany']);
 ```
 
 ### .addFilterWord(string filterWord)
