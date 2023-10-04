@@ -11,7 +11,7 @@
     /**
      * The string to replaces found matches with. Defaults to ***
      *
-     * @type {String}
+     * @type {String|function(match: string): string}
      */
     this.replacementString = '***';
 
@@ -230,11 +230,11 @@
     /**
      * Set the string to replace matches in the filterString() method.
      *
-     * @param   {String}    str
+     * @param   {String|function(match: string): string}    str
      * @returns {Censoring}
      */
     setReplacementString: function (str) {
-      if (typeof str !== 'string') {
+      if (typeof str !== 'string' && typeof str !== 'function') {
         throw 'Invalid replacementString type supplied. Expected string.';
       }
 
@@ -244,7 +244,7 @@
     },
 
     /**
-     * @returns {String}
+     * @returns {String|function(match: string): string}
      */
     getReplacementString: function () {
       return this.replacementString;
@@ -263,7 +263,7 @@
      * Prepare some text to be matched against.
      *
      * @param   {String}    str
-     * @param   {Boolean}   highlight
+     * @param   {Boolean}   [highlight]
      * @returns {Censoring}
      */
     prepare: function (str, highlight) {
@@ -286,7 +286,7 @@
      * Filter the string.
      *
      * @param   {String}    str
-     * @param   {Boolean}   highlight
+     * @param   {Boolean}   [highlight]
      * @returns {String}}
      */
     filterString: function (str, highlight) {
@@ -298,6 +298,10 @@
         if (!highlight) {
           return str.replace(pattern, function (match) {
             self.currentMatch.matches.push(match);
+            if (typeof self.replacementString === 'function') {
+              return self.replacementString(match);
+            }
+
             return self.replacementString;
           });
         }

@@ -105,13 +105,14 @@ scan.enableFilter('words');
 scan.addFilterWord('doody face');
 ```
 
-### .setReplacementString(string replacementString)
-Set the string to replace matches with. Defaults to `***`.
+### .setReplacementString(string|function(match: string):string replacementString)
+Set a replacement function, or set a string to replace matches with. Defaults to `***`.
 
 ```javascript
 var scan = new Censoring();
 
 scan.setReplacementString('pony');
+scan.setReplacementString((match) => '*'.repeat(match.length));
 ```
 
 ### .getReplacementString()
