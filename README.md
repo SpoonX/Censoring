@@ -182,7 +182,7 @@ var scan = new Censoring(),
     result;
 
 scan.enableFilter('words');
-scan.addFilterWord(['stoopid head', 'big meany']);
+scan.addFilterWords(['stoopid head', 'big meany']);
 
 result = scan.filterString(testString);
 
